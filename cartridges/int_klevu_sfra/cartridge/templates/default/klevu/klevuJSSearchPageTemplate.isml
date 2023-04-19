@@ -1,0 +1,33 @@
+<isdecorate template="common/layout/page">
+
+
+<iscontentasset aid="klevu-search-landing-templates"/>
+
+  
+<isif condition="${pdict.query}">
+	<input type="hidden" id="klevuSearchTerm" name="klevuSearchTerm" value="${pdict.query}" />
+    <div class="hero slant-down error-hero">
+        <h1 class="page-title">Search results for: ${pdict.query}</h1>
+    </div>
+</isif>
+
+
+<!-- Include: Landing JS -->
+<isif condition="${pdict.query}">	
+   	<isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('https://js.klevu.com/theme/default/v2/search-results-page.js');
+    </isscript>
+</isif>
+         	
+    <div class="container">
+        <!-- <h2 class='text-center error-message'>Coming Soon</h2> -->
+        <div class="row">
+            <div class="col-sm-12">                
+                 <iscomment>Add a placeholder where the search results will be injected</iscomment>
+    			<div class="klevuLanding"></div>
+
+            </div>
+        </div>
+    </div>	
+</isdecorate>

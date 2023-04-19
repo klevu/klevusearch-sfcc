@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns="http://www.demandware.com/xml/impex/services/2014-09-26">
+    <service-credential service-credential-id="klevu.http.backoffice.credentials">
+        <url>https://config.ksearchnet.com/config/{api_key}/ftps</url>
+    </service-credential>
+
+    <service-credential service-credential-id="klevu.http.analytics.credentials">
+        <url>https://stats.ksearchnet.com/analytics/</url>
+    </service-credential>
+	
+    <service service-id="klevu.http.storefront">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>klevu-rest</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>true</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+    </service>
+	
+    <service service-id="klevu.http.backoffice">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>klevu-rest</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>true</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id/>
+        <credential-id>klevu.http.backoffice.credentials</credential-id>
+    </service>
+
+    <service service-id="klevu.http.analytics">
+        <service-type>HTTP</service-type>
+        <enabled>true</enabled>
+        <log-prefix>klevu-rest</log-prefix>
+        <comm-log-enabled>false</comm-log-enabled>
+        <force-prd-enabled>true</force-prd-enabled>
+        <mock-mode-enabled>false</mock-mode-enabled>
+        <profile-id/>
+        <credential-id>klevu.http.analytics.credentials</credential-id>
+    </service>
+
+</services>

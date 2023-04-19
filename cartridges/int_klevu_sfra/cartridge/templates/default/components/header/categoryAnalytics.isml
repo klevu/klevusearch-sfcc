@@ -1,0 +1,30 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+
+var klevu_meta = {
+    "apiKey" : "<isprint value="${klevuUtilsStore.config.apiKey}" encoding="off" />",
+    "platform" : {
+        "system": "<isprint value="${klevuAnalytics.config.system}" encoding="jshtml" />",
+        "pluginVersion": "<isprint value="${klevuAnalytics.config.pluginVersion}" encoding="jshtml" />"
+    },
+    "page" : {
+        "pageType" : "${klevuPageType}",
+
+        <iscomment> category page meta </iscomment>
+        "category" : {
+            "categoryUrl" : "<isprint value="${klevuAnalytics.getCategoryUrlParams(pdict.productSearch.permalink)}" encoding="off" />",
+            "categoryName" : "<isprint value="${(request.httpParameterMap.srule && request.httpParameterMap.srule.value == 'top-sellers') ? 'Top Sellers' : pdict.productSearch.category.klevuCategoryDisplayName ? pdict.productSearch.category.klevuCategoryDisplayName : pdict.productSearch.category.name}" encoding="off" />"
+        },
+        "pagination" : {
+            "paginationStartsFrom" : <isprint value="${pdict.productSearch.pageNumber}" encoding="off" />,
+            "totalRecords" : <isprint value="${pdict.productSearch.count.toFixed()}" encoding="off" />,
+            "limit" : <isprint value="${pdict.productSearch.pageSize.toFixed()}" encoding="off" />
+        },
+        "products" : <isprint value="${klevuAnalytics.getProductsMetadata(JSON.stringify(pdict.productSearch.productIds))}" encoding="off" />,
+
+        <isif condition="${!empty(pdict.productSearch.selectedFilters)}">
+            "filters" : {
+                "active" : <isprint value="${klevuAnalytics.getActiveFilters(pdict.productSearch.selectedFilters)}" encoding="off" />
+            }
+        </isif>
+        }
+}

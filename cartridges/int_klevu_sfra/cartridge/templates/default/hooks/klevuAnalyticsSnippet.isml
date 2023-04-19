@@ -1,0 +1,36 @@
+<isset name="enableKlevuStorefront" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').config.enableKlevuStorefront}" scope="page"/>
+
+<isset name="isKlevuInUse" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').isKlevuInUse()}" scope="page"/>
+<isset name="isKlevuPreserveInUseForSRLP" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').isKlevuPreserveInUseForSRLP()}" scope="page"/>
+<isset name="isKlevuPreserveInUseCategory" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').isKlevuPreserveInUseCategory()}" scope="page"/>
+<isset name="sfccPath" value="${request.getHttpPath()}" scope="page" />
+<isset name="klevuPageType" value="${pdict.productSearch && !empty(pdict.productSearch) && pdict.productSearch.isCategorySearch ? 'category' : sfccPath.includes('Search-') ? 'srlp' : 'other'}" scope="page" />
+<isset name="klevuEnableRecs" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').config.klevuEnableRecs}" scope="page" />
+<isset name="klevuEnableRecsUrl" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').config.klevuEnableRecsUrl}" scope="page" />
+<isset name="klevuApiKey" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').config.apiKey}" scope="page" />
+<isset name="klevuSFCCAnalyticsUsage" value="${(isKlevuPreserveInUseForSRLP && (klevuPageType === 'srlp' || klevuPageType === 'other')) || (isKlevuPreserveInUseCategory && (klevuPageType === 'category' || klevuPageType === 'other'))}" scope="page" />
+<isinclude template="components/modules"/>
+
+<isif condition="${enableKlevuStorefront}">
+    <iscontentasset aid="klevu-quick-search-templates"/>
+    <iscontentasset aid="klevu-settings"/>
+    <isif condition="${isKlevuInUse}">
+        <isif condition="${pdict.productSearch && pdict.productSearch.klevuProducts}">
+            <input type="hidden" name="klevuSearchTerm" value="${pdict.productSearch.klevuSearchTerm}" />
+            <input type="hidden" name="klevuProducts" value="${pdict.productSearch.klevuProducts}" />
+            <input type="hidden" name="klevuProductsCount" value="${pdict.productSearch.count}" />
+        </isif>
+        <isif condition="${klevuSFCCAnalyticsUsage}">
+            <script><isinclude template="components/header/metadatav1_event" /></script>
+        </isif>
+    </isif>
+    <input type="hidden" name="isKlevuEnabled" value="${isKlevuInUse}" />
+    <input type="hidden" name="klevuPageType" value="${klevuPageType}" />
+    
+    <iscomment>Klevu Recommendations</iscomment>
+    <isif condition="${klevuEnableRecs}">
+        <script src="${klevuEnableRecsUrl}"></script>
+        <script><isinclude template="components/header/klevuEnableRecs" /></script>
+    </isif>
+</isif>
+

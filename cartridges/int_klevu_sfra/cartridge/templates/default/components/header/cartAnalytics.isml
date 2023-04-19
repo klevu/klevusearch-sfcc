@@ -1,0 +1,13 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+
+var klevu_meta = {
+    "apiKey" : "<isprint value="${klevuUtilsStore.config.apiKey}" encoding="jshtml" />",
+    "platform" : {
+        "system": "<isprint value="${klevuAnalytics.config.system}" encoding="jshtml" />",
+        "pluginVersion": "<isprint value="${klevuAnalytics.config.pluginVersion}" encoding="jshtml" />"
+    },
+    "page" : {
+        "pageType": "cart",
+        "products" : <isprint value="${klevuAnalytics.getCartMetadata(pdict.items)}" encoding="off" />
+    }
+}

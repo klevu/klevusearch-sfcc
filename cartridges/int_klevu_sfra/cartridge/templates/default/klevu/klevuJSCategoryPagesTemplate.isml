@@ -1,0 +1,40 @@
+<isdecorate template="common/layout/page">
+
+
+<iscontentasset aid="klevu-category-page-templates"/>
+
+
+<isif condition="${pdict.selectedCategory && pdict.isCategorySearch}">
+    <div class="hero slant-down error-hero">
+        <h1 class="page-title">${pdict.selectedCategory}</h1>
+    </div>
+	<input type="hidden" id="klevuCategoryPath" name="klevuCategoryPath" value="${pdict.categoryPath}" />
+</isif>
+
+<iscomment>Include: CatNav JS </iscomment>
+<isif condition="${pdict.isCategorySearch}">
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('https://js.klevu.com/theme/default/v2/category-page.js');	
+        assets.addJs('/js/ksearch-catnav.js');
+    </isscript>
+</isif>
+
+    <div class="container">
+        <iscomment>Adding Recs to Klevu JS powered theme</iscomment>
+        <div class="row">
+            <isslot id="klevu-slot-recs-top" context="global" description="Top Klevu Recs slot" />
+        </div>
+        <iscomment> <h2 class='text-center error-message'>Coming Soon</h2> </iscomment>
+        <div class="row">
+            <div class="col-sm-12">                
+                 <iscomment>Add a placeholder where the search results will be injected</iscomment>
+                <div class="klevuLanding"></div>
+            </div>
+        </div>
+        <iscomment>Adding Recs to Klevu JS powered theme</iscomment>
+        <div class="row">
+            <isslot id="klevu-slot-recs-bottom" context="global" description="Bottom Klevu Recs slot" />
+        </div>
+    </div>	
+</isdecorate>

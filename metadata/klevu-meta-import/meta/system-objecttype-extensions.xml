@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
+  <type-extension type-id="Order">
+      <custom-attribute-definitions>
+            <attribute-definition attribute-id="klevuProductBaseCurrency">
+                <display-name xml:lang="x-default">Product Base Currency Value</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Custom Attributes">
+                <display-name xml:lang="x-default">Custom Attributes</display-name>
+                <attribute attribute-id="klevuProductBaseCurrency"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+    <type-extension type-id="SitePreferences">
+        <custom-attribute-definitions>
+            <attribute-definition attribute-id="enableKlevuStorefront">
+                <display-name xml:lang="x-default">Enable Klevu Storefront</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+	    <attribute-definition attribute-id="klevuStorefrontSearchURL">
+                <display-name xml:lang="x-default">Storefront Search URL</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="klevuMandatoryProductAttributes">
+                <display-name xml:lang="x-default">Product Attributes Mapping Mandatory</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+			<attribute-definition attribute-id="klevuOptionalProductAttributes">
+                <display-name xml:lang="x-default">Product Attributes Mapping Optional</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+			<attribute-definition attribute-id="klevuAPIKey">
+                <display-name xml:lang="x-default">API Key</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="klevuRestKey">
+                <display-name xml:lang="x-default">Rest Key</display-name>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+            </attribute-definition>
+			<attribute-definition attribute-id="klevuDynamicProductAttributes">
+                <display-name xml:lang="x-default">Product Attributes Dynamic</display-name>
+                <type>text</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+            </attribute-definition>
+			<attribute-definition attribute-id="klevuProductsInSingleFile">
+                <display-name xml:lang="x-default">Number of Products in Single File</display-name>
+                <description xml:lang="x-default">Number of Master or Simple products in a single XML file</description>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-value>100.0</min-value>
+                <max-value>20000.0</max-value>
+                <default-value>500</default-value>
+            </attribute-definition>
+			<attribute-definition attribute-id="klevuItemSearchLimit">
+                <display-name xml:lang="x-default">Storefront Item Search Limit</display-name>
+                <type>int</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>2000</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="enableKlevuCategoryPage">
+                <display-name xml:lang="x-default">Enable Klevu Category Page</display-name>
+                <type>boolean</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <default-value>false</default-value>
+            </attribute-definition>
+        </custom-attribute-definitions>
+        <group-definitions>
+            <attribute-group group-id="Klevu">
+                <display-name xml:lang="x-default">Klevu</display-name>
+                <attribute attribute-id="enableKlevuStorefront"/>
+                <attribute attribute-id="enableKlevuCategoryPage"/>
+                <attribute attribute-id="klevuStorefrontSearchURL"/>
+		<attribute attribute-id="klevuAPIKey"/>
+                <attribute attribute-id="klevuRestKey"/>
+		<attribute attribute-id="klevuProductsInSingleFile"/>
+		<attribute attribute-id="klevuItemSearchLimit"/>
+                <attribute attribute-id="klevuMandatoryProductAttributes"/>
+		<attribute attribute-id="klevuOptionalProductAttributes"/>
+		<attribute attribute-id="klevuDynamicProductAttributes"/>
+            </attribute-group>
+        </group-definitions>
+    </type-extension>
+
+</metadata>

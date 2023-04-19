@@ -1,0 +1,29 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+
+var klevu_meta = {
+    "apiKey" : "<isprint value="${klevuUtilsStore.config.apiKey}" encoding="off" />",
+    "platform" : {
+        "system": "<isprint value="${klevuAnalytics.config.system}" encoding="jshtml" />",
+        "pluginVersion": "<isprint value="${klevuAnalytics.config.pluginVersion}" encoding="jshtml" />"
+    },
+    "page" : {
+        "pageType" : "${klevuPageType}",
+        "search" : {
+            "searchUrl" : "<isprint value="${klevuAnalytics.getRequestUrl(pdict.productSearch.permalink, pdict.productSearch.klevuSearchTerm ? pdict.productSearch.klevuSearchTerm : pdict.productSearch.searchKeywords)}" encoding="off" />",
+            "searchTerm" : "<isprint value="${pdict.productSearch.klevuSearchTerm ? pdict.productSearch.klevuSearchTerm : pdict.productSearch.searchKeywords}" encoding="off" />",
+            "typeOfQuery" : "<isprint value="${pdict.typeOfSearch}" encoding="jsattribute"/>"
+        },
+        "pagination" : {
+            "paginationStartsFrom" : <isprint value="${pdict.productSearch.pageNumber}" encoding="off" />,
+            "totalRecords" : <isprint value="${pdict.productSearch.count.toFixed()}" encoding="off" />,
+            "limit" : <isprint value="${pdict.productSearch.pageSize.toFixed()}" encoding="off" />
+        },
+        "products" : <isprint value="${klevuAnalytics.getProductsMetadata(JSON.stringify(pdict.productSearch.productIds))}" encoding="off" />,
+        
+        <isif condition="${!empty(pdict.productSearch.selectedFilters)}">
+            "filters" : {
+                "active" : <isprint value="${klevuAnalytics.getActiveFilters(pdict.productSearch.selectedFilters)}" encoding="off" />
+            }
+        </isif>
+    }
+}

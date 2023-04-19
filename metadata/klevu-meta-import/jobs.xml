@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jobs xmlns="http://www.demandware.com/xml/impex/jobs/2015-07-01">
+    <job job-id="KlevuExport01Full" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ProductSearchReindex" type="SearchReindex" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="Product related search indexes">true</parameter>
+                    <parameter name="Active data search index">false</parameter>
+                    <parameter name="Content search index">false</parameter>
+                    <parameter name="Indexer Type">Full Index Rebuild</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuExportMasterProductAttributes" type="custom.KlevuExportProductAttributes" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="productType">master</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuExportSimpleProductAttributes" type="custom.KlevuExportSimpleProductAttributes" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="productType">simple</parameter>
+                </parameters>
+            </step>
+            <step step-id="LastExportedTimeProduct" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuExportSiteCatalogCategories" type="custom.KlevuExportCategoryFull" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="LastExportedTimeCategory" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">category</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuExportContentAssets" type="custom.KlevuExportContentFull" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="LastExportedTimeContentAssets" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">contentAssets</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">full</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-once enabled="true">
+                <date>2021-05-11Z</date>
+                <time>06:38:30.000Z</time>
+            </run-once>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport02DeltaProducts" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ProductSearchReindex" type="SearchReindex" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="Product related search indexes">true</parameter>
+                    <parameter name="Active data search index">false</parameter>
+                    <parameter name="Content search index">false</parameter>
+                    <parameter name="Indexer Type">Full Index Rebuild</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuDeltaExportMasterProductAttributes" type="custom.KlevuDeltaExportProductAttributes" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="productType">master</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuDeltaExportSimpleProductAttributes" type="custom.KlevuDeltaExportSimpleProductAttributes" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="productType">simple</parameter>
+                </parameters>
+            </step>
+            <step step-id="LastExportedTimeProduct" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:21:18.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport03DeltaCategories" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">category</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuDeltaExportSiteCatalogCategories" type="custom.KlevuExportCategoryDelta" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="LastExportedTimeCategory" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">category</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">category</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:22:28.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport04DeltaContentAssets" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">contentAssets</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuDeltaExportContentAssets" type="custom.KlevuExportContentDelta" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="LastExportedTimeContentAssets" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">contentAssets</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">contentAssets</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:22:54.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport05DeletedProducts" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delete</parameter>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuExportDeletedProducts" type="custom.KlevuExportDeletedProducts" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delete</parameter>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:23:20.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport06DeletedCategories" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delete</parameter>
+                    <parameter name="ObjectTypeName">category</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuExportDeletedCategories" type="custom.KlevuExportDeletedCategories" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delete</parameter>
+                    <parameter name="ObjectTypeName">category</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:23:40.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport07DeletedContentAssets" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delete</parameter>
+                    <parameter name="ObjectTypeName">contentAssets</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuExportDeletedContent" type="custom.KlevuExportDeletedContent" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delete</parameter>
+                    <parameter name="ObjectTypeName">contentAssets</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:23:58.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport08Order" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuExportOrder" type="custom.KlevuExportOrder" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="KlevuSetLastExportedTime" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">order</parameter>
+                </parameters>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:24:19.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+    <job job-id="KlevuExport09DeltaPrice" priority="0">
+        <description/>
+        <parameters/>
+        <flow>
+            <context site-id="RefArch"/>
+            <step step-id="KlevuAPIAvailabilityCheck" type="custom.KlevuAPICheck" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ClearImpexLocation" type="custom.ClearImpexLocation" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+            <step step-id="ProductSearchReindex" type="SearchReindex" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="Product related search indexes">true</parameter>
+                    <parameter name="Active data search index">false</parameter>
+                    <parameter name="Content search index">false</parameter>
+                    <parameter name="Indexer Type">Full Index Rebuild</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuInitiateJobFileContent" type="custom.KlevuInitiateJobFileContent" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuDeltaExportMasterProductPriceData" type="custom.KlevuDeltaExportMasterProductPrice" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="productType">master</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuDeltaExportSimpleProductPriceData" type="custom.KlevuDeltaExportSimpleProductPrice" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="productType">simple</parameter>
+                </parameters>
+            </step>
+            <step step-id="LastExportedTimeProduct" type="custom.SetLastExportedTime" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuGenerateJobFile" type="custom.KlevuGenerateJobFile" enforce-restart="false">
+                <description/>
+                <parameters>
+                    <parameter name="ExportMode">delta</parameter>
+                    <parameter name="ObjectTypeName">product</parameter>
+                </parameters>
+            </step>
+            <step step-id="KlevuUploadFilesToSFTP" type="custom.KlevuUploadSFTP" enforce-restart="false">
+                <description/>
+                <parameters/>
+            </step>
+        </flow>
+        <rules/>
+        <triggers>
+            <run-recurring enabled="true">
+                <recurrence>
+                    <date-from>2021-05-11Z</date-from>
+                    <start-time>19:24:49.000Z</start-time>
+                    <interval>6h</interval>
+                    <day-of-week/>
+                </recurrence>
+            </run-recurring>
+        </triggers>
+    </job>
+
+</jobs>

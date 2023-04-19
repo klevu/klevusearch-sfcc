@@ -1,0 +1,424 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+
+function klevuSendCategoryData() {
+    
+     
+    //init storage , it will be used to track the last category data to be used to validate the reference on product page
+    var category = klevu.dictionary("category");
+    category.setStorage("local");
+    category.mergeFromGlobal();
+    category.addElement("klevu_categoryName",  klevu_page_meta.categoryName);
+    category.addElement("klevu_categoryUrl", klevu_page_meta.categoryUrl);
+    category.addElement("klevu_pageType", klevu_page_meta.pageType);
+    var metaProductIds = klevu_page_meta.categoryProducts.map(function(e) { return e.itemId });
+    category.addElement("klevu_categoryProducts", metaProductIds);
+    category.addElement("klevu_categoryPath", klevu_page_meta.categoryPath);
+    category.mergeToGlobal();
+    // build the category track object
+    var klevuCategoryOptions = {
+       klevu_categoryName: klevu_page_meta.categoryName,
+       klevu_categoryPath: klevu_page_meta.categoryPath,
+       klevu_productIds: metaProductIds.join(",")
+     };
+    
+    //send it to the klevu analitics server
+    klevu.analyticsUtilSFCC.base.sendCatViewAnalyticsRequest(klevuCategoryOptions);
+  }
+
+function klevuSendSearchData() {
+    
+     
+    //init storage , it will be used to track the last search data to be used to validate the reference on product page
+    var category = klevu.dictionary("category");
+    category.setStorage("local");
+    category.mergeFromGlobal();
+    category.addElement("klevu_categoryName",  klevu_page_meta.searchTerm);
+    category.addElement("klevu_categoryUrl", window.location.protocol + "//" + window.location.host + window.location.pathname);
+    var metaSearchProductIds = klevu_page_meta.searchRecords.map(function(e) { return e.itemId });
+    category.addElement("klevu_categoryProducts", metaSearchProductIds);
+    category.addElement("klevu_pageType", klevu_page_meta.pageType);
+    category.mergeToGlobal();
+          
+     // build the search track object
+    var klevuSearchOptions = {
+       klevu_term: klevu_page_meta.searchTerm,
+       klevu_totalResults: klevu_page_meta.totalRecords,
+       klevu_typeOfQuery: klevu_page_meta.typeOfQuery
+       
+     };
+    //send it to the klevu analitics server
+    klevu.analyticsUtilSFCC.base.sendSearchViewAnalyticsRequest(klevuSearchOptions);
+  }
+
+function klevuSendProductData(){
+    //retrive last ccategory/search from storage
+    var category = klevu.dictionary("category");
+    category.setStorage("local");
+    category.mergeFromGlobal();
+    //check if there was a last category/search as a reference
+    if(category.getElement("klevu_categoryName") != "klevu_categoryName" || category.getElement("klevu_categoryUrl") != "klevu_categoryUrl" || category.getElement("klevu_pageType")!= "klevu_pageType" ){
+      if(document.referrer && (document.referrer.indexOf(category.getElement("klevu_categoryUrl")) != -1 || category.getElement("klevu_categoryUrl").indexOf(document.referrer) != -1) ){
+        //track if last visit was a category
+        if(category.getElement("klevu_pageType") == "category"){
+            //build the category item click object
+            var klevuProduct = {
+                klevu_categoryName:"",
+                klevu_categoryPath:"",
+                klevu_productId:klevu_page_meta.itemId,
+                klevu_productName: klevu_page_meta.itemName,
+                klevu_productUrl:klevu_page_meta.itemUrl,
+                klevu_productSku:klevu_page_meta.itemSku,
+                klevu_salePrice: klevu_page_meta.itemSalePrice,
+                send: false
+                
+            };
+            klevuProduct.klevu_categoryName = category.getElement("klevu_categoryName");
+             klevuProduct.klevu_categoryPath = category.getElement("klevu_categoryPath");
+             var products = category.getElement("klevu_categoryProducts").split(",");
+             //validate that the product was part of the visited category
+             if(typeof products == "object" && products.indexOf(klevu_page_meta.itemId) != -1 ){
+                klevuProduct.klevu_productPosition = products.indexOf(klevu_page_meta.itemId);
+                klevuProduct.send = true;
+             }
+             //send the product click
+             if(klevuProduct.send){
+              delete klevuProduct.send;
+              klevu.analyticsUtilSFCC.base.sendCategoryProductClickTrackingAnalyticsRequest(klevuProduct);
+            }
+        } else if(category.getElement("klevu_pageType") == "srlp"){
+            //build the search item click object
+            var klevuProduct = {
+                klevu_keywords:"",
+                klevu_type:"clicked",
+                klevu_productId:klevu_page_meta.itemId,
+                klevu_productName: klevu_page_meta.itemName,
+                klevu_productUrl:klevu_page_meta.itemUrl,
+                send: false
+                
+            };
+             klevuProduct.klevu_keywords = category.getElement("klevu_categoryName");
+             var products = category.getElement("klevu_categoryProducts").split(",");
+             //validate that the product was part of the visited search results page
+             if(typeof products == "object" && products.indexOf(klevu_page_meta.itemId) != -1 ){
+                klevuProduct.klevu_productPosition = products.indexOf(klevu_page_meta.itemId);
+                klevuProduct.send = true;
+             }
+              //send the product click
+             if(klevuProduct.send){
+              delete klevuProduct.send;
+              klevu.analyticsUtilSFCC.base.sendSearchProductClickTrackingAnalyticsRequest(klevuProduct);
+            }
+        }
+        }
+    }
+    
+    
+  }
+
+// Init the Metadata v1 object parsing
+function klevuSFCCInit(){
+    //extend klevu to include sfcc analitics
+    klevu.extend({
+        analyticsUtilSFCC: {
+              base: {
+
+                  /**
+                   * Function to get cat view term option object
+                   * @param {*} dataObj 
+                   */
+                  getCategoryViewOptions: function (dataObj) {
+                      var analyticsCategoryOptions = {
+                          klevu_categoryName: "unknown",
+                          klevu_src: "unknown",
+                          klevu_categoryPath: "unknown",
+                          klevu_productIds: "unknown",
+                          klevu_pageStartsFrom: "unknown"
+                      };
+
+                      if (!dataObj) {
+                          return analyticsCategoryOptions;
+                      }
+
+                      if (dataObj.categoryName) {
+                          analyticsCategoryOptions.klevu_categoryName = dataObj.categoryName;
+                      }
+
+                      if (dataObj.categoryPath) {
+                          analyticsCategoryOptions.klevu_categoryPath = dataObj.categoryPath;
+                      }
+
+                      if (dataObj.productIds) {
+                          analyticsCategoryOptions.klevu_productIds = dataObj.productIds;
+                      }
+
+                      if (dataObj.src) {
+                          analyticsCategoryOptions.klevu_src = dataObj.src;
+                      }
+
+                      if (dataObj.pageStartsFrom) {
+                          analyticsCategoryOptions.klevu_pageStartsFrom = dataObj.pageStartsFrom;
+                      }
+
+                      return analyticsCategoryOptions;
+                  },
+
+                  /**
+                   * Function to send cat view analytics request
+                   * @param {*} termOptions 
+                   */
+                  sendCatViewAnalyticsRequest: function (termOptions) {
+                      if (!termOptions) {
+                          termOptions = this.getCategoryViewOptions({
+                              categoryName: "",
+                              src: "",
+                              categoryPath: "",
+                              productIds: "",
+                              pageStartsFrom: ""
+                          });
+                      }
+                      klevu.analyticsEvents.catview(termOptions);
+                  },
+
+                  /**
+                   * Function to get cat product tracking click object
+                   * @param {*} dataObj 
+                   */
+                  getCategoryProductClickTrackingOption: function (dataObj) {
+                      var analyticsCategoryClickOptions = {
+                          klevu_categoryName: "unknown",
+                          klevu_src: "unknown",
+                          klevu_categoryPath: "unknown",
+                          klevu_productId: "unknown",
+                          klevu_productName: "unknown",
+                          klevu_productUrl: "unknown",
+                          klevu_productSku: "unknown",
+                          klevu_salePrice: "unknown",
+                          klevu_productRatings: "unknown",
+                          klevu_productPosition: "unknown"
+                      };
+
+                      if (!dataObj) {
+                          return analyticsCategoryClickOptions;
+                      }
+
+                      if (dataObj.categoryName) {
+                          analyticsCategoryClickOptions.klevu_categoryName = dataObj.categoryName;
+                      }
+
+                      if (dataObj.categoryPath) {
+                          analyticsCategoryClickOptions.klevu_categoryPath = dataObj.categoryPath;
+                      }
+
+                      if (dataObj.productId) {
+                          analyticsCategoryClickOptions.klevu_productId = dataObj.productId;
+                      }
+
+                      if (dataObj.productName) {
+                          analyticsCategoryClickOptions.klevu_productName = dataObj.productName;
+                      }
+
+                      if (dataObj.productSku) {
+                          analyticsCategoryClickOptions.klevu_productSku = dataObj.productSku;
+                      }
+
+                      if (dataObj.salePrice) {
+                          analyticsCategoryClickOptions.klevu_salePrice = dataObj.salePrice;
+                      }
+
+                      if (dataObj.productRatings) {
+                          analyticsCategoryClickOptions.klevu_productRatings = dataObj.productRatings;
+                      }
+
+                      if (dataObj.productPosition) {
+                          analyticsCategoryClickOptions.klevu_productPosition = dataObj.productPosition;
+                      }
+
+                      if (dataObj.src) {
+                          analyticsCategoryClickOptions.klevu_src = dataObj.src;
+                      }
+
+                      return analyticsCategoryClickOptions;
+                  },
+
+                  /**
+                   * Function to send cat product click tracking analytics request
+                   * @param {*} termOptions 
+                   */
+                  sendCategoryProductClickTrackingAnalyticsRequest: function (termOptions) {
+                      if (!termOptions) {
+                          termOptions = this.getCategoryProductClickTrackingOption({
+                              categoryName: "",
+                              src: "",
+                              categoryPath: "",
+                              productId: "",
+                              productName: "",
+                              productUrl: "",
+                              productSku: "",
+                              salePrice: "",
+                              productRatings: "",
+                              productPosition: ""
+                          });
+                      }
+                      klevu.analyticsEvents.catclick(termOptions);
+                  },
+                  /**
+                   * Function to get cat view term option object
+                   * @param {*} dataObj 
+                   */
+                  getSearchViewOptions: function (dataObj) {
+                      var analyticsSearchOptions = {
+                          klevu_term: "unknown",
+                          klevu_totalResults: "unknown",
+                          klevu_typeOfQuery: "unknown"
+                      };
+
+                      if (!dataObj) {
+                          return analyticsSearchOptions;
+                      }
+
+                      if (dataObj.klevu_term) {
+                          analyticsSearchOptions.klevu_term = dataObj.klevu_term;
+                      }
+
+                      if (dataObj.klevu_totalResults) {
+                          analyticsSearchOptions.klevu_totalResults = dataObj.klevu_totalResults;
+                      }
+
+                      if (dataObj.klevu_typeOfQuery) {
+                          analyticsSearchOptions.klevu_typeOfQuery = dataObj.klevu_typeOfQuery;
+                      }
+                      return analyticsSearchOptions;
+                  },
+
+                  /**
+                   * Function to send cat view analytics request
+                   * @param {*} termOptions 
+                   */
+                  sendSearchViewAnalyticsRequest: function (termOptions) {
+                      if (!termOptions) {
+                          termOptions = this.getSearchViewOptions({
+                              klevu_term: "",
+                              klevu_totalResults: "",
+                              klevu_typeOfQuery: ""
+                          });
+                      }
+                      klevu.analyticsEvents.term(termOptions);
+                  },
+                  /**
+                   * Function to get cat product tracking click object
+                   * @param {*} dataObj 
+                   */
+                  getSearchProductClickTrackingOption: function (dataObj) {
+                      var analyticsSearchClickOptions = {
+                          klevu_keywords: "unknown",
+                          klevu_type: "unknown",
+                          klevu_productId: "unknown",
+                          klevu_productName: "unknown",
+                          klevu_productUrl: "unknown"
+                      };
+
+                      if (!dataObj) {
+                          return analyticsSearchClickOptions;
+                      }
+
+                      if (dataObj.klevu_keywords) {
+                          analyticsSearchClickOptions.klevu_keywords = dataObj.klevu_keywords;
+                      }
+
+                      if (dataObj.klevu_type) {
+                          analyticsSearchClickOptions.klevu_type = dataObj.klevu_type;
+                      }
+
+                      if (dataObj.klevu_productId) {
+                          analyticsSearchClickOptions.klevu_productId = dataObj.klevu_productId;
+                      }
+
+                      if (dataObj.klevu_productName) {
+                          analyticsSearchClickOptions.klevu_productName = dataObj.klevu_productName;
+                      }
+
+                      if (dataObj.klevu_productUrl) {
+                          analyticsSearchClickOptions.klevu_productSku = dataObj.klevu_productUrl;
+                      }
+
+                      return analyticsSearchClickOptions;
+                  },
+
+                  /**
+                   * Function to send cat product click tracking analytics request
+                   * @param {*} termOptions 
+                   */
+                  sendSearchProductClickTrackingAnalyticsRequest: function (termOptions) {
+                      if (!termOptions) {
+                          termOptions = this.getSearchProductClickTrackingOption({
+                              klevu_keywords: "",
+                              klevu_type: "",
+                              klevu_productId: "",
+                              klevu_productName: "",
+                              klevu_productUrl: ""
+                          });
+                      }
+                      klevu.analyticsEvents.click(termOptions);
+                  }
+                  
+                  
+              },
+              build: true
+          }
+      });
+
+
+  /**
+   * Analytics event for sfcc preserve layout
+   */
+  klevu.coreEvent.build({
+      name: "analyticsPowerUpSFCCPL",
+      fire: function () {
+          if (
+              !klevu.getSetting(klevu.settings, "settings.powerup.analytics", false) ||
+              !klevu.analytics ||
+              !klevu.analytics.build ||
+              !klevu.analyticsUtilSFCC ||
+              !klevu.analyticsUtilSFCC.build
+          ) {
+              return false;
+          }
+          return true;
+      },
+      maxCount: 500,
+      delay: 100
+  });
+  klevu.coreEvent.attach("analyticsPowerUpSFCCPL", {
+        name: "attachKlevuPowerupAnalytics",
+        fire: function () {
+            // init the klevu_page_meta
+            if(!(typeof klevu_page_meta == "undefined")){
+             if(klevu_page_meta.pageType == "category"){
+                if (typeof klevuSendCategoryData == 'function') { 
+                  klevuSendCategoryData(); 
+                }
+             } else if(klevu_page_meta.pageType == "pdp"){
+                if (typeof klevuSendProductData == 'function') { 
+                  klevuSendProductData(); 
+                }
+             } else if(klevu_page_meta.pageType == "srlp"){
+                if (typeof klevuSendSearchData == 'function') { 
+                  klevuSendSearchData(); 
+                }
+             } 
+}
+        }
+    });
+    
+  var options = {
+      powerup: {analytics:true},
+  };
+
+  klevu(options);
+}
+
+if (klevuSFCCAnalyticsUsage) {
+    klevu.interactive(function () {
+        klevuSFCCInit(); 
+    });
+}

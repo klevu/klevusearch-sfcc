@@ -1,0 +1,12 @@
+{
+    "hooks": [
+        {
+            "name": "app.template.afterFooter",
+            "script": "./cartridge/scripts/hooks/templateHooks.js"
+        },
+        {
+            "name": "app.template.htmlHead",
+            "script": "./cartridge/scripts/hooks/klevuHeader.js"
+        }
+    ]
+}

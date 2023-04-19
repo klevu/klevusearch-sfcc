@@ -1,0 +1,26 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+
+// Used for KLEVU SFCC Analytics trigger
+var klevuSFCCAnalyticsUsage = false;
+
+function empty(val) {
+    if (val === undefined)
+        return true;
+    if (typeof (val) == 'function' || typeof (val) == 'number' || typeof (val) == 'boolean' || Object.prototype.toString.call(val) === '[object Date]')
+        return false;
+    if (val == null || val.length === 0)
+        return true;
+    if (typeof (val) == "object") {
+        var r = true;
+        for (var f in val)
+            r = false;
+        return r;
+    }
+    return false;
+}
+
+if (typeof(Storage) !== "undefined") {
+    var klevuCategoryClickList = window.localStorage.getItem('klv_analytics-util_categoryClickList');
+    var klevuClickList = window.localStorage.getItem('klv_analytics-util_clickList');
+    klevuSFCCAnalyticsUsage = empty(klevuCategoryClickList) && empty(klevuClickList) ? true : false;
+}

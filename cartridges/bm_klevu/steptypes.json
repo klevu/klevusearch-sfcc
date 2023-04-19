@@ -1,0 +1,589 @@
+{
+    "step-types": {
+        "chunk-script-module-step": [
+            {
+                "@type-id":"custom.KlevuExportProductAttributes",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Export mandatory/required attributes for master products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuMasterAttributesExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuDeltaExportProductAttributes",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Delta Export mandatory/required attributes for master products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuMasterAttributesDeltaExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportSimpleProductAttributes",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Export mandatory/required attributes for simple products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuSimpleAttributesExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportBundleSetsProductAttributes",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Export mandatory/required attributes for bundle and set products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuBundleSetsAttributesExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        },
+                        {
+                            "@name":"exportMode",
+                            "description":"Export Mode",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        },
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuDeltaExportSimpleProductAttributes",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Delta Export mandatory/required attributes for simple products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuSimpleAttributesDeltaExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuDeltaExportMasterProductPrice",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Delta Export Price for master products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuMasterProductsPriceDeltaExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuDeltaExportSimpleProductPrice",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Delta Export Price for simple products",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuSimpleProductsPriceDeltaExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"productType",
+                            "description":"The type of product to export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true"
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportCategoryFull",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Export all category from the assigned site's catalog",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuCategoryExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportCategoryDelta",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Delta Export all category from the assigned site's catalog",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuCategoryDeltaExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportContentFull",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Export content assets from the assigned site's catalog'",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuContentAssetsExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportContentDelta",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Delta Export content assets from the assigned site's catalog'",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuContentAssetsDeltaExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+            {
+                "@type-id":"custom.KlevuExportOrder",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Export all order for the specific site'",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuOrderExport.js",
+                "before-step-function":"beforeStep",
+                "read-function":"read",
+                "process-function":"process",
+                "write-function":"write",
+                "after-step-function":"afterStep",
+                "chunk-size":1000,
+                "transactional":"false",
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            }
+        ],
+        "script-module-step": [
+            {
+                "@type-id":"custom.ClearImpexLocation",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Clears Impex Location",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/clearImpexLocation.js",
+                "function":"clearImpex"
+            },
+            {
+                "@type-id":"custom.KlevuUploadSFTP",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Upload Files to Klevu SFTP",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuUploadFileSFTP.js",
+                "function":"uploadFiles"
+            },
+            {
+                "@type-id":"custom.KlevuExportDeletedProducts",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Creates XML of products which have been deleted or made offline since last export",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuExportDeletedProducts.js",
+                "function":"Run"
+            },
+            {
+                "@type-id":"custom.KlevuExportDeletedCategories",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Creates XML of categories which have been deleted or made offline since last export",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuExportDeletedCategories.js",
+                "function":"Run"
+            },
+            {
+                "@type-id":"custom.KlevuExportDeletedContent",
+                "@supports-parallel-execution":"false",
+                "@supports-site-context":"true",
+                "@supports-organization-context":"false",
+                "description":"Creates XML of content assets which have been deleted or made offline since last export",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuExportDeletedContent.js",
+                "function":"Run"
+            },
+            {
+                "@type-id":"custom.SetLastExportedTime",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/setLastExportedTime.js",
+                "description":"Sets last exported time in custom cache",
+                "function":"Run",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"ObjectTypeName",
+                            "description":"Name of the object for which time needs to be set",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true",
+                            "default-value":""
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"FINISHED",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+			{
+                "@type-id":"custom.KlevuAPICheck",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuAPIPing.js",
+                "description":"To check the availability of Kleuv API",
+                "function":"isKlevuAPIAvailable",
+                "parameters":{
+                    "parameter":[
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+			{
+                "@type-id":"custom.KlevuInitiateJobFileContent",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuInitiateJobContent.js",
+                "description":"Start the JSON in webdav custom cache to populate data file names",
+                "function":"startJobContent",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"ExportMode",
+                            "description":"To indicate full or delta export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true",
+                            "default-value":"full"
+                        },
+                        {
+                            "@name":"ObjectTypeName",
+                            "description":"Item type",
+                            "@type":"string",
+                            "@required":"false",
+                            "@trim":"true",
+                            "default-value":""
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            },
+			{
+                "@type-id":"custom.KlevuGenerateJobFile",
+                "module":"bm_klevu/cartridge/scripts/jobs/export/klevuGenerateJobFile.js",
+                "description":"Generates Job file from webdav custom cache",
+                "function":"generateJobFile",
+                "parameters":{
+                    "parameter":[
+                        {
+                            "@name":"ExportMode",
+                            "description":"To indicate full or delta export",
+                            "@type":"string",
+                            "@required":"true",
+                            "@trim":"true",
+                            "default-value":"full"
+                        },
+                        {
+                            "@name":"ObjectTypeName",
+                            "description":"Item type",
+                            "@type":"string",
+                            "@required":"false",
+                            "@trim":"true",
+                            "default-value":""
+                        }
+                    ]
+                },
+                "status-codes": {
+                    "status": [
+                        {
+                            "@code":"ERROR",
+                            "description": "Step execution failed."
+                        },
+                        {
+                            "@code":"OK",
+                            "description":"Step execution finished successfully."
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

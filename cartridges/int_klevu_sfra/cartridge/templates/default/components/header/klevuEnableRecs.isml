@@ -1,0 +1,123 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+<iscomment>Klevu Recommendations module</iscomment>
+
+// Klevu Recommendation init
+klevu.interactive(function () {
+    var options = {
+        recs: {
+            apiKey: "<isprint value="${klevuApiKey}" encoding="off" />"
+        },
+        analytics: {
+            apiKey: "<isprint value="${klevuApiKey}" encoding="off" />"
+        },
+    };
+    klevu(options);
+    klevu.coreEvent.attach("setRemoteConfigRecsBaseUpdates", {
+        name: "klevuRecsSFCCAddToCart",
+        fire: function () {
+            var RECS_BASE = klevu.recs.base;
+
+            RECS_BASE.getScope().chains.search.control.add({
+            name: "attachKlevuRecsSFCCAddToCart",
+            fire: function (data, scope) {
+
+                var parentScope = scope.recsScope;
+
+                scope.recsScope.searchObject.getScope().chains.template.events.add({
+                    name: "bindKlevuRecsSFCCAddToCart",
+                    fire: function (data, scope) {
+                        var target = klevu.getSetting(scope.kScope.settings, "settings.search.searchBoxTarget");
+                        var kuRECSAddToCart = klevu.dom.find(".kuRECSAddToCartBtn", target);
+                        if (kuRECSAddToCart) {
+                            klevu.each(kuRECSAddToCart, function (key, element) {
+                                klevu.event.attach(element, "click", function () {
+                                    var variantId = (element.dataset && element.dataset.id) ? element.dataset.id : "";
+                                    var productURL = (element.dataset && element.dataset.url) ? element.dataset.url : "";
+                                    var quantity = (element.dataset && element.dataset.qty) ? element.dataset.qty : 0;
+
+                                    // Fire product add to cart
+                                    klevu_addToCart(variantId, element, productURL);
+                                });
+                            });
+                        }
+                    }
+                });
+            }
+            });
+
+            // Power up Klevu Recommendations
+            klevu.options(
+                { "powerUp": {
+                    "recsModule": true
+                }
+            });
+        }
+    });
+});
+
+
+function klevuHanldeCartUpdate(response) {
+    $('.minicart').trigger('count:update', response);
+    var messageType = response.error ? 'alert-danger' : 'alert-success';
+    // show add to cart toast
+    if (response.newBonusDiscountLineItem
+        && Object.keys(response.newBonusDiscountLineItem).length !== 0) {
+        chooseBonusProducts(response.newBonusDiscountLineItem);
+    } else {
+        if ($('.add-to-cart-messages').length === 0) {
+            $('body').append(
+                '<div class="add-to-cart-messages"></div>'
+            );
+        }
+
+        $('.add-to-cart-messages').append(
+            '<div class="alert ' + messageType + ' add-to-basket-alert text-center" role="alert">'
+            + response.message
+            + '</div>'
+        );
+
+        setTimeout(function () {
+            $('.add-to-basket-alert').remove();
+        }, 5000);
+    }
+}
+
+function klevu_addToCart(pid, element, url) {
+    try {
+        $.spinner().start();
+        var formatPid = pid.split("-");
+        if (formatPid.length === 2) {
+            // get actual recommendations result 
+            var klevu_recs = klevu.dom.helpers.getClosest(element,'.klevuTarget').recsObject.getScope().searchObject.getScope().template.getData().query.klevuRECSItemList.result;
+            if(klevu_recs.some((product) => {
+                return product.sku === formatPid[1];
+            })) {
+                pid = formatPid[1];
+            }
+        }
+        var addToCartUrl = "${URLUtils.url('Cart-AddProduct')}";
+        var form = {
+            pid: pid,
+            quantity: 1
+        };
+                    
+        $.ajax({
+            url: addToCartUrl,
+            method: 'POST',
+            data: form,
+            success: function (data) {
+                klevuHanldeCartUpdate(data);
+                $.spinner().stop();
+            },
+            error: function () {
+                $.spinner().stop();
+                window.location.replace(url);
+            }
+        });
+    } catch(e) {
+        console.log("There was an error adding to cart : " + e.message);
+        $.spinner().stop();
+        window.location.replace(url);
+    }
+    
+}

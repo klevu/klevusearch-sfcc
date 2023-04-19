@@ -1,0 +1,45 @@
+<isset name="enableKlevuStorefront" value="${require('~/cartridge/scripts/utils/klevuUtilsStore').config.enableKlevuStorefront}" scope="page"/>
+
+<isset name="klevuUtilsStore" value="${require('~/cartridge/scripts/utils/klevuUtilsStore')}" scope="page"/>
+<isset name="klevuAnalytics" value="${require('~/cartridge/scripts/utils/klevuAnalytics')}" scope="page" />
+<isset name="sfccPath" value="${request.getHttpPath()}" scope="page" />
+
+<iscomment>Generating Metadata v1 tag . TODO - Remove in the future update</iscomment>
+<isif condition="${true}">
+    <iscomment>Metadata v1</iscomment>
+    <isif condition="${enableKlevuStorefront}">
+        <script><isinclude template="components/header/metadatav1" /></script>
+        <script><isinclude template="components/header/analyticsLocalStorage" /></script>
+    </isif>
+<iselse/>
+    <iscomment>Analytics for Category and Search Result Page</iscomment>
+    <isif condition="${sfccPath.includes('Search-')}">
+        <isset name="klevuPageType" value="${pdict.productSearch.isCategorySearch ? 'category' : 'srlp'}" scope="page" />
+
+        <iscomment>Check if Klevu is enabled</iscomment>
+        <isif condition="${enableKlevuStorefront && klevuUtilsStore.isKlevuPreserveInUseCategory() && pdict.productSearch && pdict.productSearch.count > 0}">
+            <isif condition="${klevuPageType}">
+
+                <iscomment>Klevu Category Analytics</iscomment>
+                <isif condition="${klevuPageType === 'category'}">
+                    <script><isinclude template="components/header/categoryAnalytics" /></script>
+                </isif>
+
+                <iscomment>Klevu Search Result Page</iscomment>
+                <isif condition="${klevuPageType === 'srlp'}">
+                    <script><isinclude template="components/header/slrpAnalytics" /></script>
+                </isif>
+            </isif>
+        </isif>
+    </isif>
+
+    <iscomment>Analytics for Product Page</iscomment>
+    <isif condition="${sfccPath.includes('Product-Show')}">
+        <script><isinclude template="components/header/pdpAnalytics" /></script>
+    </isif>
+
+    <iscomment>Analytics for Cart Page</iscomment>
+    <isif condition="${sfccPath.includes('Cart-Show') && pdict.items.length !== 0}">
+        <script><isinclude template="components/header/cartAnalytics" /></script>
+    </isif>
+</isif>

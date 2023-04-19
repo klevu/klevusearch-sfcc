@@ -1,0 +1,53 @@
+<iscontent type="text/javascript" charset="UTF-8" compact="true" />
+<isif condition="${sfccPath.includes('Search-') && pdict.productSearch && pdict.productSearch.count > 0}">
+    <isset name="klevuPageType" value="${pdict.productSearch.isCategorySearch ? 'category' : 'srlp'}" scope="page" />
+    <isset name="sruleApplied" value="${request.httpParameterMap.srule ? request.httpParameterMap.srule.value : null}" scope="page" />
+    <isset name="categoryId" value="${pdict.productSearch.category.id}" scope="page" />
+    <isif condition="${klevuPageType === 'category'}">
+        var klevu_page_meta = {
+            "pageType" : "${klevuPageType}",
+            "categoryName" : "<isprint value="${!empty(sruleApplied) && categoryId === 'root' ? klevuAnalytics.getStaticCategoryPaths(sruleApplied) : pdict.productSearch.category.name}" encoding="htmlcontent" />",
+            "categoryPath" : "<isprint value="${klevuAnalytics.getCategoryPath(pdict.productSearch)}" encoding="off" />",
+            "paginationStartsFrom" : "<isprint value="${pdict.productSearch.pageNumber}" encoding="off" />",
+            "totalRecords" : "<isprint value="${pdict.productSearch.count.toFixed()}" encoding="off" />",
+            "categoryUrl" : "<isprint value="${klevuAnalytics.getCategoryUrlParams(pdict.productSearch.permalink)}" encoding="off" />",
+            "categoryProducts" : <isprint value="${klevuAnalytics.getMetadatav1Products(JSON.stringify(pdict.productSearch.productIds))}" encoding="off" />,
+        }
+    <iselse/>
+        var klevu_page_meta = {
+            "pageType" : "${klevuPageType}",
+            "paginationStartsFrom" : <isprint value="${pdict.productSearch.pageNumber}" encoding="off" />,
+            "totalRecords" : "<isprint value="${pdict.productSearch.count.toFixed()}" encoding="off" />",
+            "searchTerm" : "<isprint value="${pdict.productSearch.klevuSearchTerm ? pdict.productSearch.klevuSearchTerm : pdict.productSearch.searchKeywords}" encoding="off" />",
+            "searchUrl" : "<isprint value="${klevuAnalytics.getRequestUrl(pdict.productSearch.permalink, pdict.productSearch.klevuSearchTerm ? pdict.productSearch.klevuSearchTerm : pdict.productSearch.searchKeywords)}" encoding="off" />",
+            <iscomment>There will be no typeOfSearch with themes disabled</iscomment>
+            <isif condition="${pdict.typeOfSearch}">
+                "typeOfQuery" : "<isprint value="${pdict.typeOfSearch}" encoding="jsattribute"/>",
+            </isif>
+            "searchRecords" : <isprint value="${klevuAnalytics.getMetadatav1Products(JSON.stringify(pdict.productSearch.productIds))}" encoding="off" />
+        }
+    </isif>
+</isif>
+<isif condition="${sfccPath.includes('Product-Show') && pdict.product}">
+    var klevu_page_meta = {
+        "pageType" : "pdp",
+        "itemName" : "<isprint value="${pdict.product.productName}" encoding="htmlcontent" />",
+        "itemUrl" : "<isprint value="${URLUtils.abs('Product-Show', 'pid', pdict.product.id).toString()}" encoding="off">",
+        "itemId" : "<isprint value="${klevuAnalytics.getProductData(pdict.product).itemId}" encoding="off" />",
+        <isif condition="${pdict.product.price && pdict.product.price.sales}">
+            "itemSalePrice" : "<isprint value="${pdict.product.price.sales.decimalPrice}" encoding="off" />",
+            "itemCurrency" : "<isprint value="${pdict.product.price.sales.currency}" encoding="off" />",
+        </isif>
+        <isif condition="${pdict.product.productType === 'variant'}">
+            "itemGroupId" : "<isprint value="${klevuAnalytics.getMasterProductId(pdict.product.id)}" encoding="off" />"
+        </isif>
+
+    }
+</isif>
+<isif condition="${sfccPath.includes('Cart-Show') && pdict.items.length !== 0}">
+    var klevu_page_meta = {
+        "pageType" : "cart",
+        "cartRecords" : <isprint value="${klevuAnalytics.getCartMetadatav1(pdict.items)}" encoding="off" />
+    }
+</isif>
+
