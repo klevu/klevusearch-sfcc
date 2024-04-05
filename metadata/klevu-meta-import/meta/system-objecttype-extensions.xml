@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata xmlns="http://www.demandware.com/xml/impex/metadata/2006-10-31">
-  <type-extension type-id="Order">
-      <custom-attribute-definitions>
+    <type-extension type-id="Order">
+        <custom-attribute-definitions>
             <attribute-definition attribute-id="klevuProductBaseCurrency">
                 <display-name xml:lang="x-default">Product Base Currency Value</display-name>
                 <type>text</type>
@@ -25,12 +25,54 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
             </attribute-definition>
-	    <attribute-definition attribute-id="klevuStorefrontSearchURL">
+            <attribute-definition attribute-id="klevuStorefrontSearchURL">
                 <display-name xml:lang="x-default">Storefront Search URL</display-name>
+                <description xml:lang="x-default">Search URL i.g. https://eucsxxv2.ksearchnet.com/cs/v2/search</description>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
+            </attribute-definition>
+            <attribute-definition attribute-id="klevuSearchResultPageLayout">
+                <display-name xml:lang="x-default">Smart Search</display-name>
+                <description xml:lang="x-default">When preserving SFCC theme, Quick Search will still use Klevu JS Theme.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Disabled (SFCC default search, not Klevu powered)</display>
+                        <value>SFCC_DEFAULT_NO_KLEVU</value>
+                    </value-definition>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">Klevu JS Theme (Klevu powered ranking, facets and rendering)</display>
+                        <value>KLEVU_JS_THEME</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Preserve your SFCC theme (Klevu powered ranking, SFCC facets and rendering)</display>
+                        <value>KLEVU_PRESERVE_STORE_THEME</value>
+                    </value-definition>
+                </value-definitions>
+            </attribute-definition>
+            <attribute-definition attribute-id="klevuCategoryPageLayout">
+                <display-name xml:lang="x-default">Smart Category Merchandising</display-name>
+                <type>enum-of-string</type>
+                <mandatory-flag>true</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition>
+                        <display xml:lang="x-default">Disabled (SFCC default search, not Klevu powered)</display>
+                        <value>SFCC_DEFAULT_NO_KLEVU_CATNAV</value>
+                    </value-definition>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">Klevu JS Theme (Klevu powered ranking, facets and rendering)</display>
+                        <value>KLEVU_JS_THEME_CATNAV</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Preserve your SFCC theme (Klevu powered ranking, SFCC facets and rendering)</display>
+                        <value>KLEVU_PRESERVE_STORE_THEME_CATNAV</value>
+                    </value-definition>
+                </value-definitions>
             </attribute-definition>
             <attribute-definition attribute-id="klevuMandatoryProductAttributes">
                 <display-name xml:lang="x-default">Product Attributes Mapping Mandatory</display-name>
@@ -38,13 +80,13 @@
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
-			<attribute-definition attribute-id="klevuOptionalProductAttributes">
+            <attribute-definition attribute-id="klevuOptionalProductAttributes">
                 <display-name xml:lang="x-default">Product Attributes Mapping Optional</display-name>
                 <type>text</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
-			<attribute-definition attribute-id="klevuAPIKey">
+            <attribute-definition attribute-id="klevuAPIKey">
                 <display-name xml:lang="x-default">API Key</display-name>
                 <type>string</type>
                 <mandatory-flag>false</mandatory-flag>
@@ -58,13 +100,13 @@
                 <externally-managed-flag>false</externally-managed-flag>
                 <min-length>0</min-length>
             </attribute-definition>
-			<attribute-definition attribute-id="klevuDynamicProductAttributes">
+            <attribute-definition attribute-id="klevuDynamicProductAttributes">
                 <display-name xml:lang="x-default">Product Attributes Dynamic</display-name>
                 <type>text</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
             </attribute-definition>
-			<attribute-definition attribute-id="klevuProductsInSingleFile">
+            <attribute-definition attribute-id="klevuProductsInSingleFile">
                 <display-name xml:lang="x-default">Number of Products in Single File</display-name>
                 <description xml:lang="x-default">Number of Master or Simple products in a single XML file</description>
                 <type>int</type>
@@ -74,34 +116,65 @@
                 <max-value>20000.0</max-value>
                 <default-value>500</default-value>
             </attribute-definition>
-			<attribute-definition attribute-id="klevuItemSearchLimit">
+            <attribute-definition attribute-id="klevuItemSearchLimit">
                 <display-name xml:lang="x-default">Storefront Item Search Limit</display-name>
                 <type>int</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>2000</default-value>
             </attribute-definition>
-            <attribute-definition attribute-id="enableKlevuCategoryPage">
-                <display-name xml:lang="x-default">Enable Klevu Category Page</display-name>
+            <attribute-definition attribute-id="klevuEnableRecs">
+                <display-name xml:lang="x-default">Smart Recommendations</display-name>
+                <description xml:lang="x-default">You must have an active Klevu Smart Recommendations subscription for this feature.</description>
                 <type>boolean</type>
                 <mandatory-flag>false</mandatory-flag>
                 <externally-managed-flag>false</externally-managed-flag>
                 <default-value>false</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="klevuEnableRecsUrl">
+                <display-name xml:lang="x-default">Klevu Recommendations Library URL</display-name>
+                <description xml:lang="x-default">URL of the library in use</description>
+                <type>string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <min-length>0</min-length>
+                <default-value>https://js.klevu.com/recs/v2/klevu-recs.js</default-value>
+            </attribute-definition>
+            <attribute-definition attribute-id="klevuItemGroupIdToItemId">
+                <display-name xml:lang="x-default">Master ID to Variant ID (Analytics and Metadata)</display-name>
+                <description xml:lang="x-default">Prepend master id to variant id. Please contact support if you are unsure.</description>
+                <type>enum-of-string</type>
+                <mandatory-flag>false</mandatory-flag>
+                <externally-managed-flag>false</externally-managed-flag>
+                <value-definitions>
+                    <value-definition default="true">
+                        <display xml:lang="x-default">No</display>
+                        <value>false</value>
+                    </value-definition>
+                    <value-definition>
+                        <display xml:lang="x-default">Yes</display>
+                        <value>true</value>
+                    </value-definition>
+                </value-definitions>
             </attribute-definition>
         </custom-attribute-definitions>
         <group-definitions>
             <attribute-group group-id="Klevu">
                 <display-name xml:lang="x-default">Klevu</display-name>
                 <attribute attribute-id="enableKlevuStorefront"/>
-                <attribute attribute-id="enableKlevuCategoryPage"/>
                 <attribute attribute-id="klevuStorefrontSearchURL"/>
-		<attribute attribute-id="klevuAPIKey"/>
+                <attribute attribute-id="klevuAPIKey"/>
                 <attribute attribute-id="klevuRestKey"/>
-		<attribute attribute-id="klevuProductsInSingleFile"/>
-		<attribute attribute-id="klevuItemSearchLimit"/>
+                <attribute attribute-id="klevuProductsInSingleFile"/>
+                <attribute attribute-id="klevuItemSearchLimit"/>
                 <attribute attribute-id="klevuMandatoryProductAttributes"/>
-		<attribute attribute-id="klevuOptionalProductAttributes"/>
-		<attribute attribute-id="klevuDynamicProductAttributes"/>
+                <attribute attribute-id="klevuOptionalProductAttributes"/>
+                <attribute attribute-id="klevuDynamicProductAttributes"/>
+                <attribute attribute-id="klevuSearchResultPageLayout"/>
+                <attribute attribute-id="klevuCategoryPageLayout"/>
+                <attribute attribute-id="klevuEnableRecs"/>
+                <attribute attribute-id="klevuEnableRecsUrl"/>
+                <attribute attribute-id="klevuItemGroupIdToItemId"/>
             </attribute-group>
         </group-definitions>
     </type-extension>
